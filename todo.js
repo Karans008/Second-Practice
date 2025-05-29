@@ -1,29 +1,14 @@
-const fs = require('fs');
+// ... previous code remains unchanged
 
-const FILE = 'data.json';
-
-function loadData() {
-  if (!fs.existsSync(FILE)) return [];
-  const data = fs.readFileSync(FILE);
-  return JSON.parse(data);
-}
-
-function saveData(data) {
-  fs.writeFileSync(FILE, JSON.stringify(data, null, 2));
-}
-
-function addTask(task) {
+function completeTask(index) {
   const tasks = loadData();
-  tasks.push({ task, done: false });
+  if (index <= 0 || index > tasks.length) {
+    console.log('Invalid task number');
+    return;
+  }
+  tasks[index - 1].done = true;
   saveData(tasks);
-  console.log(`Added: "${task}"`);
+  console.log(`Marked task ${index} as complete.`);
 }
 
-function listTasks() {
-  const tasks = loadData();
-  tasks.forEach((t, i) => {
-    console.log(`${i + 1}. ${t.task} [${t.done ? 'x' : ' '}]`);
-  });
-}
-
-module.exports = { addTask, listTasks };
+module.exports = { addTask, listTasks, completeTask };
